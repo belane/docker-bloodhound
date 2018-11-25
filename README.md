@@ -1,5 +1,17 @@
 # BloodHound Docker Ready to Use
 
+## Run from Docker Hub
+```
+docker run -it \
+  -p 7474:7474 \
+  -e DISPLAY=unix$DISPLAY \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  --device=/dev/dri:/dev/dri \
+  -v $(pwd)/data:/data \
+  --name bloodhound belane/bloodhound
+```
+
+
 ## Build Image
 ### Build
 `docker build . -t bloodhound`
