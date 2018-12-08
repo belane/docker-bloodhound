@@ -34,9 +34,8 @@ RUN wget https://github.com/BloodHoundAD/BloodHound/releases/download/$bloodhoun
     mkdir /data &&\
     chmod +x /opt/BloodHound-linux-x64/BloodHound
 
-# BloodHound Old Queries
-RUN mkdir -p /root/.config/bloodhound &&\
-    wget https://raw.githubusercontent.com/BloodHoundAD/BloodHound/e17462cf50422bfe9572e60390d32479fdbc32c4/src/components/SearchContainer/Tabs/PrebuiltQueries.json -O /root/.config/bloodhound/customqueries.json
+# BloodHound Config
+COPY config/*.json /root/.config/bloodhound/
 
 # BloodHound Test Data
 RUN if [ "$data" = "example" ]; then \
@@ -50,11 +49,12 @@ RUN if [ "$data" = "example" ]; then \
 RUN echo '#!/usr/bin/env bash\n\
     service neo4j start\n\
     echo "Starting ..."\n\
-    if [ ! -e /opt/.ready ]; then touch /opt/.ready; sleep 15\n\
-    curl -H "Content-Type: application/json" -X POST -d {\"password\":\"blood\"} -u neo4j:neo4j http://127.0.0.1:7474/user/neo4j/password &1>/dev/null; fi\n\
+    if [ ! -e /opt/.ready ]; then touch /opt/.ready\n\
+    echo "First run takes some time"; sleep 5\n\
+    until $(curl -s -H "Content-Type: application/json" -X POST -d {\"password\":\"blood\"} --fail -u neo4j:neo4j http://127.0.0.1:7474/user/neo4j/password); do sleep 4; done; fi\n\
     cp -n /opt/BloodHound-linux-x64/resources/app/Ingestors/SharpHound.* /data\n\
     echo "\e[92m*** Log in with bolt://127.0.0.1:7687 (neo4j:blood) ***\e[0m"\n\
-    sleep 5; /opt/BloodHound-linux-x64/BloodHound 2>/dev/null\n' > /opt/run.sh &&\
+    sleep 7; /opt/BloodHound-linux-x64/BloodHound 2>/dev/null\n' > /opt/run.sh &&\
     chmod +x /opt/run.sh
 
 
