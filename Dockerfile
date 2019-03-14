@@ -2,7 +2,7 @@ FROM openjdk:8-jre-slim
 MAINTAINER github.com/belane
 ARG data=none
 ARG neo4j=3.4.8
-ARG bloodhound=2.0.4
+ARG bloodhound=2.1.0
 
 # Base packages
 RUN apt-get update -qq &&\

@@ -22,7 +22,7 @@ docker run -it \
 - **neo4j** version
 - **bloodhound** version
 
-`docker build . -t bloodhound --build-arg neo4j=3.4.8 --build-arg bloodhound=2.0.4`
+`docker build . -t bloodhound --build-arg neo4j=3.4.8 --build-arg bloodhound=2.1.0`
 
 ## Run
 ```
