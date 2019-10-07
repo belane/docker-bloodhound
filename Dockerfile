@@ -15,7 +15,7 @@ RUN apt-get update -qq &&\
       libgtk2.0-bin \
       libcanberra-gtk-module \
       libx11-xcb1 \
-      libva-glx1 \
+      libva-glx2 \
       libgl1-mesa-glx \
       libgl1-mesa-dri \
       libgconf-2-4 \
