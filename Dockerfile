@@ -1,8 +1,8 @@
-FROM openjdk:8-jre-slim
+FROM openjdk:11-jre
 MAINTAINER github.com/belane
 ARG data=none
-ARG neo4j=3.4.8
-ARG bloodhound=2.1.0
+ARG neo4j=4.0.3
+ARG bloodhound=3.0.3
 
 # Base packages
 RUN apt-get update -qq &&\
@@ -15,7 +15,7 @@ RUN apt-get update -qq &&\
       libgtk2.0-bin \
       libcanberra-gtk-module \
       libx11-xcb1 \
-      libva-glx1 \
+      libva-glx2 \
       libgl1-mesa-glx \
       libgl1-mesa-dri \
       libgconf-2-4 \
@@ -23,8 +23,8 @@ RUN apt-get update -qq &&\
       libxss1
 
 # Neo4j
-RUN wget -nv -O - https://debian.neo4j.org/neotechnology.gpg.key | apt-key add - &&\
-    echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list &&\
+RUN wget -nv -O - https://debian.neo4j.com/neotechnology.gpg.key | apt-key add - &&\
+    echo 'deb https://debian.neo4j.com stable latest' > /etc/apt/sources.list.d/neo4j.list &&\
     apt-get update -qq &&\
     apt-get install -y -qq neo4j=1:$neo4j
 
