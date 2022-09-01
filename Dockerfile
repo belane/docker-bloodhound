@@ -1,8 +1,9 @@
 FROM openjdk:11-jre-slim
 MAINTAINER github.com/belane
 ARG data=none
-ARG neo4j=latest
+ARG neo4j=4.4.10
 ARG bloodhound=4.1.0
+
 # Base packages
 RUN apt-get update -qq &&\
     apt-get install --no-install-recommends -y -qq\
@@ -13,7 +14,6 @@ RUN apt-get update -qq &&\
       gnupg \
       libgtk-3-0 \
       libgbm1 \
-      #libgtk3.0-bin \
       libcanberra-gtk-module \
       libx11-xcb1 \
       libva-glx2 \
@@ -24,16 +24,10 @@ RUN apt-get update -qq &&\
       libxss1
 
 # Neo4j
-#RUN wget -nv -O - https://debian.neo4j.org/neotechnology.gpg.key | apt-key add - &&\
-#    echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list &&\
-#    apt-get update -qq &&\
-#    apt-get install -y -qq neo4j=1:$neo4j
-
-RUN wget -O - https://debian.neo4j.com/neotechnology.gpg.key | apt-key add - &&\
+RUN wget -nv -O - https://debian.neo4j.com/neotechnology.gpg.key | apt-key add - &&\
     echo 'deb https://debian.neo4j.com stable latest' | tee /etc/apt/sources.list.d/neo4j.list &&\
     apt-get update &&\ 
     apt-get install -y -qq neo4j
-
 
 # BloodHound
 RUN wget https://github.com/BloodHoundAD/BloodHound/releases/download/$bloodhound/BloodHound-linux-x64.zip -nv -P /tmp &&\
@@ -52,7 +46,7 @@ RUN if [ "$data" = "example" ]; then \
     echo "dbms.active_database=BloodHoundExampleDB.graphdb" >> /etc/neo4j/neo4j.conf &&\
     echo "dbms.allow_upgrade=true" >> /etc/neo4j/neo4j.conf; fi
 
-# Start
+# Start script
 RUN echo '#!/usr/bin/env bash\n\
     neo4j-admin set-initial-password blood \n\
     service neo4j start\n\
@@ -64,7 +58,6 @@ RUN echo '#!/usr/bin/env bash\n\
     echo "\e[92m*** Log in with bolt://127.0.0.1:7687 (neo4j:blood) ***\e[0m"\n\
     sleep 7; /opt/BloodHound-linux-x64/BloodHound --no-sandbox 2>/dev/null\n' > /opt/run.sh &&\
     chmod +x /opt/run.sh
-
 
 # Clean up
 RUN apt-get clean &&\
