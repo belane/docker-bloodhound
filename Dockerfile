@@ -1,6 +1,5 @@
 FROM openjdk:11-jre-slim
 MAINTAINER github.com/belane
-ARG data=none
 ARG neo4j=4.4.10
 ARG bloodhound=4.1.0
 
