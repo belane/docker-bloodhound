@@ -38,14 +38,6 @@ RUN wget https://github.com/BloodHoundAD/BloodHound/releases/download/$bloodhoun
 # BloodHound Config
 COPY config/*.json /root/.config/bloodhound/
 
-# BloodHound Test Data
-RUN if [ "$data" = "example" ]; then \
-    git clone https://github.com/adaptivethreat/BloodHound.git /tmp/BloodHound/ &&\
-    cp -r /tmp/BloodHound/BloodHoundExampleDB.graphdb /var/lib/neo4j/data/databases/ &&\
-    chown -R neo4j:neo4j /var/lib/neo4j/data/databases/BloodHoundExampleDB.graphdb/ &&\
-    echo "dbms.active_database=BloodHoundExampleDB.graphdb" >> /etc/neo4j/neo4j.conf &&\
-    echo "dbms.allow_upgrade=true" >> /etc/neo4j/neo4j.conf; fi
-
 # Start script
 RUN echo '#!/usr/bin/env bash\n\
     neo4j-admin set-initial-password blood \n\
