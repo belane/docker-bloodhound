@@ -1,5 +1,9 @@
 FROM openjdk:11-jre-slim
-MAINTAINER github.com/belane
+LABEL org.opencontainers.image.authors="https://github.com/belane" \
+      org.opencontainers.image.description="BloodHound Docker Ready to Use" \
+      org.opencontainers.image.source="https://github.com/belane/docker-bloodhound" \
+      org.opencontainers.image.title="docker-bloodhound" \
+      org.opencontainers.image.version="0.2.0"
 ARG neo4j=4.4.10
 ARG bloodhound=4.1.0
 
