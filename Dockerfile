@@ -37,15 +37,11 @@ RUN wget https://github.com/BloodHoundAD/BloodHound/releases/download/$bloodhoun
 # BloodHound Config
 COPY config/*.json /root/.config/bloodhound/
 
-# Start script
+# Init Script
 RUN echo '#!/usr/bin/env bash\n\
     neo4j-admin set-initial-password blood \n\
     service neo4j start\n\
-    #echo "Starting ..."\n\
-    #if [ ! -e /opt/.ready ]; then touch /opt/.ready\n\
-    #echo "First run takes some time"; sleep 5\n\
-    #until $(curl -s -H "Content-Type: application/json" -X POST -d {\"password\":\"blood\"} --fail -u neo4j:neo4j http://127.0.0.1:7474/user/neo4j/password); do sleep 4; done; fi\n\
-    #cp -n /opt/BloodHound-linux-x64/resources/app/Ingestors/SharpHound.* /data\n\
+    cp -n /opt/BloodHound-linux-x64/resources/app/Collectors/SharpHound.* /data\n\
     echo "\e[92m*** Log in with bolt://127.0.0.1:7687 (neo4j:blood) ***\e[0m"\n\
     sleep 7; /opt/BloodHound-linux-x64/BloodHound --no-sandbox 2>/dev/null\n' > /opt/run.sh &&\
     chmod +x /opt/run.sh
