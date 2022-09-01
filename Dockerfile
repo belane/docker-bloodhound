@@ -1,4 +1,4 @@
-FROM openjdk:11-jre
+FROM openjdk:11-jre-slim
 MAINTAINER github.com/belane
 ARG data=none
 ARG neo4j=latest
