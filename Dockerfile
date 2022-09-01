@@ -39,7 +39,10 @@ RUN wget https://github.com/BloodHoundAD/BloodHound/releases/download/$bloodhoun
     chmod +x /opt/BloodHound-linux-x64/BloodHound
 
 # BloodHound Config
-COPY config/*.json /root/.config/bloodhound/
+COPY config.json /root/.config/bloodhound/
+
+# Custom Queries
+RUN wget https://raw.githubusercontent.com/CompassSecurity/BloodHoundQueries/master/customqueries.json -nv -P /root/.config/bloodhound/
 
 # Init Script
 RUN echo '#!/usr/bin/env bash\n\
