@@ -4,7 +4,8 @@ LABEL org.opencontainers.image.authors="https://github.com/belane" \
       org.opencontainers.image.source="https://github.com/belane/docker-bloodhound" \
       org.opencontainers.image.title="docker-bloodhound" \
       org.opencontainers.image.version="0.2.0"
-ARG bloodhound=4.0.3
+ARG neo4j=4.4.15
+ARG bloodhound=4.2.0
 
 # Base packages
 RUN apt-get update -qq &&\
@@ -24,13 +25,14 @@ RUN apt-get update -qq &&\
       libgconf-2-4 \
       libasound2 \
       libxss1 \
-      openjdk-17-jre
+      apt-transport-https \
+      openjdk-11-jre
 
 # Neo4j
 RUN wget -nv -O - https://debian.neo4j.com/neotechnology.gpg.key | apt-key add - &&\
-    echo 'deb https://debian.neo4j.com stable latest' | tee /etc/apt/sources.list.d/neo4j.list &&\
-    apt-get update &&\ 
-    apt-get install -y -qq neo4j
+    echo 'deb https://debian.neo4j.com stable 4.4' | tee /etc/apt/sources.list.d/neo4j.list &&\
+    apt-get update &&\
+    apt-get install -y -qq neo4j=1:$neo4j
 
 # BloodHound
 RUN wget https://github.com/BloodHoundAD/BloodHound/releases/download/$bloodhound/BloodHound-linux-x64.zip -nv -P /tmp &&\
@@ -46,7 +48,7 @@ RUN wget https://raw.githubusercontent.com/CompassSecurity/BloodHoundQueries/mas
 
 # Init Script
 RUN echo '#!/usr/bin/env bash\n\
-    neo4j-admin dbms set-initial-password blood \n\
+    neo4j-admin set-initial-password blood \n\
     service neo4j start\n\
     cp -n /opt/BloodHound-linux-x64/resources/app/Collectors/SharpHound.* /data\n\
     echo "\e[92m*** Log in with bolt://127.0.0.1:7687 (neo4j:blood) ***\e[0m"\n\
