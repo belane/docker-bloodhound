@@ -1,10 +1,10 @@
-FROM openjdk:11-jre-slim
+FROM debian:stable-slim
 LABEL org.opencontainers.image.authors="https://github.com/belane" \
       org.opencontainers.image.description="BloodHound Docker Ready to Use" \
       org.opencontainers.image.source="https://github.com/belane/docker-bloodhound" \
       org.opencontainers.image.title="docker-bloodhound" \
       org.opencontainers.image.version="0.2.0"
-ARG neo4j=4.4.10
+ARG neo4j=4.4.15
 ARG bloodhound=4.2.0
 
 # Base packages
@@ -24,12 +24,14 @@ RUN apt-get update -qq &&\
       libgl1-mesa-dri \
       libgconf-2-4 \
       libasound2 \
-      libxss1
+      libxss1 \
+      apt-transport-https \
+      openjdk-11-jre
 
 # Neo4j
 RUN wget -nv -O - https://debian.neo4j.com/neotechnology.gpg.key | apt-key add - &&\
-    echo 'deb https://debian.neo4j.com stable latest' | tee /etc/apt/sources.list.d/neo4j.list &&\
-    apt-get update &&\ 
+    echo 'deb https://debian.neo4j.com stable 4.4' | tee /etc/apt/sources.list.d/neo4j.list &&\
+    apt-get update &&\
     apt-get install -y -qq neo4j=1:$neo4j
 
 # BloodHound
