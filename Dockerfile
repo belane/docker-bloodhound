@@ -3,7 +3,7 @@ LABEL org.opencontainers.image.authors="https://github.com/belane" \
       org.opencontainers.image.description="BloodHound Docker Ready to Use" \
       org.opencontainers.image.source="https://github.com/belane/docker-bloodhound" \
       org.opencontainers.image.title="docker-bloodhound" \
-      org.opencontainers.image.version="0.2.0"
+      org.opencontainers.image.version="0.2.1"
 ARG neo4j=4.4.15
 ARG bloodhound=4.2.0
 
@@ -29,7 +29,7 @@ RUN apt-get update -qq &&\
       openjdk-11-jre
 
 # Neo4j
-RUN wget -nv -O - https://debian.neo4j.com/neotechnology.gpg.key | apt-key add - &&\
+RUN wget -nv -O - https://debian.neo4j.com/neotechnology.gpg.key | tee /etc/apt/trusted.gpg.d/neo4j.asc &&\
     echo 'deb https://debian.neo4j.com stable 4.4' | tee /etc/apt/sources.list.d/neo4j.list &&\
     apt-get update &&\
     apt-get install -y -qq neo4j=1:$neo4j
