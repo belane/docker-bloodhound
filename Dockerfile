@@ -17,7 +17,7 @@ RUN apt-get update -qq &&\
       gnupg \
       libgtk-3-0 \
       libgbm1 \
-      libcanberra-gtk-module \
+      libcanberra-gtk3-module \
       libx11-xcb1 \
       libva-glx2 \
       libgl1-mesa-glx \
@@ -27,7 +27,7 @@ RUN apt-get update -qq &&\
       libxss1 \
       apt-transport-https \
       openjdk-11-jre
-
+zxc
 # Neo4j
 RUN wget -nv -O - https://debian.neo4j.com/neotechnology.gpg.key | tee /etc/apt/trusted.gpg.d/neo4j.asc &&\
     echo 'deb https://debian.neo4j.com stable 4.4' | tee /etc/apt/sources.list.d/neo4j.list &&\
