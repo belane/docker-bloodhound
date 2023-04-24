@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.authors="https://github.com/belane" \
       org.opencontainers.image.source="https://github.com/belane/docker-bloodhound" \
       org.opencontainers.image.title="docker-bloodhound" \
       org.opencontainers.image.version="0.2.1"
-ARG neo4j=4.4.15
+ARG neo4j=4.4.19
 ARG bloodhound=4.2.0
 
 # Base packages
